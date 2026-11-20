@@ -3,206 +3,613 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOVA VRAI - Montre + IA + QR + 5 Pages Pleines</title>
+<meta name="theme-color" content="#101629">
+
+<link rel="manifest" href="./manifest.json">
+
+<title>FLORIAN SMART STUDY</title>
+
 <style>
-body{font-family:Arial;background:#0a0a1a;color:white;padding:12px}
-.card{background:#151528;padding:15px;border-radius:15px;margin-top:12px}
-input,textarea,select{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:none;font-size:16px;background:#222;color:white;box-sizing:border-box}
-button{width:100%;padding:14px;border:none;border-radius:12px;font-weight:bold;font-size:16px;margin-top:8px;cursor:pointer}
-.b1{background:#06b6d4;color:white}.b2{background:#f97316;color:white}.b3{background:#a855f7;color:white}.b4{background:#22c55e;color:white}
-.ia{background:#0f3a2e;border:2px solid #22c55e;padding:15px;border-radius:12px;white-space:pre-wrap;line-height:1.7}
-.page{background:white;color:#111;padding:22px;border-radius:8px;margin:14px 0;min-height:850px;page-break-after:always;line-height:1.65;font-size:15px}
-.page h2{background:#0a0a1a;color:white;padding:12px;border-radius:8px;text-align:center}
-.page h3{border-bottom:2px solid #111;padding-bottom:5px}
-table{width:100%;border-collapse:collapse;margin:10px 0}
-td,th{border:1px solid #333;padding:9px;text-align:left}
-th{background:#111;color:white}
-.total{font-size:22px;font-weight:bold;text-align:right;background:#fef08a;padding:12px;border-radius:8px}
-@media print{body{background:white;color:black}.card,button,.no-print{display:none!important}.page{box-shadow:none;margin:0;border-radius:0}}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #101629;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding-bottom: 90px;
+}
+
+header {
+    background: linear-gradient(135deg,#142b50,#176a9c);
+    padding: 28px 20px;
+    border-radius: 0 0 25px 25px;
+}
+
+header h1 {
+    color: #64d9ff;
+    font-size: 23px;
+}
+
+header p {
+    margin-top: 8px;
+    color: #d0e8f5;
+}
+
+.container {
+    padding: 18px;
+}
+
+.clock {
+    background: #1b2944;
+    padding: 22px;
+    text-align: center;
+    border-radius: 18px;
+    margin-bottom: 20px;
+}
+
+#time {
+    color: #64d9ff;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+#date {
+    margin-top: 8px;
+    color: #b9cce0;
+}
+
+h2 {
+    color: #64d9ff;
+    margin: 18px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.card {
+    background: #1b2944;
+    padding: 18px;
+    border-radius: 15px;
+}
+
+.card h3 {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.card p {
+    font-size: 23px;
+    color: #64d9ff;
+    font-weight: bold;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px;
+    margin: 7px 0;
+    border: 1px solid #405574;
+    border-radius: 10px;
+    background: #263653;
+    color: white;
+}
+
+button {
+    background: #168ac2;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 10px;
+    margin: 5px 3px;
+    font-weight: bold;
+}
+
+.item {
+    background: #1b2944;
+    padding: 14px;
+    border-radius: 12px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.item span {
+    overflow-wrap: anywhere;
+}
+
+.delete {
+    background: #b53d54;
+}
+
+.progress {
+    height: 12px;
+    background: #34445e;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 12px 0;
+}
+
+#bar {
+    width: 0%;
+    height: 100%;
+    background: #31d7a0;
+}
+
+.timer {
+    text-align: center;
+    font-size: 45px;
+    color: #64d9ff;
+    margin: 30px 0;
+}
+
+.small {
+    font-size: 13px;
+    color: #aebdd4;
+}
+
+nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #17233a;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 2px;
+    border-top: 1px solid #34445e;
+}
+
+nav button {
+    background: transparent;
+    font-size: 11px;
+    padding: 5px 2px;
+    margin: 0;
+}
+
 </style>
 </head>
+
 <body>
-<h2>🩺 NOVA VRAI - Montre -> IA -> QR -> 5 Pages Pleines</h2>
 
-<div class="card">
-<h3>1. ⌚ MONTRE - Elle envoie les infos au code</h3>
-<button class="b1" onclick="recevoirMontre()">⌚ RECEVOIR LES INFOS DE MA MONTRE</button>
-<p id="msgMontre" style="color:#7dd3fc">Pas encore. Clique pour recevoir.</p>
-Coeur (montre) : <input id="coeur" placeholder="ex: 78">
-Oxygène (montre) : <input id="spo2" placeholder="ex: 98">
-Température (montre) : <input id="temp" placeholder="ex: 39.2">
-Sommeil (montre) : <input id="sommeil" placeholder="ex: 6h">
-Pas (montre) : <input id="pas" placeholder="ex: 3200">
+<header>
+<h1>FLORIAN SMART STUDY</h1>
+<p>Ton assistant universitaire personnel</p>
+</header>
+
+<div class="container">
+
+<div class="clock">
+<div id="time">00:00:00</div>
+<div id="date"></div>
 </div>
 
-<div class="card">
-<h3>2. 👤 PATIENT</h3>
-Nom complet : <input id="nom" placeholder="Nom complet du patient">
-Âge : <input id="age" placeholder="Âge">
-Téléphone : <input id="tel" placeholder="Téléphone">
-Symptômes : <textarea id="symptomes" placeholder="ex: fièvre, mal à la tête, fatigue, vomissement"></textarea>
-</div>
+<section id="home" class="section active">
+
+<h2>🏠 Tableau de bord</h2>
+
+<div class="grid">
 
 <div class="card">
-<h3>3. 🧠 IA - Elle analyse les infos de la montre</h3>
-<button class="b2" onclick="analyserIA()">🧠 IA, ANALYSE LA MONTRE ET FAIS LE DIAGNOSTIC</button>
-<div id="iaBox" class="ia" style="display:none"></div>
+<h3>📚 Matières</h3>
+<p id="subjectCount">0</p>
 </div>
 
 <div class="card">
-<h3>4. 💊 MÉDICAMENTS + PRIX - Tu mets le prix, le total se calcule tout seul</h3>
-<p>Tu peux changer les noms et les prix. Le total se calcule tout seul.</p>
-Médicament 1 - Nom : <input id="med1" value="Paracétamol 500mg">
-Prix 1 (FCFA) : <input id="prix1" type="number" value="1500" oninput="calculerTotal()">
-Médicament 2 - Nom : <input id="med2" value="Vitamine C">
-Prix 2 (FCFA) : <input id="prix2" type="number" value="2000" oninput="calculerTotal()">
-Médicament 3 - Nom : <input id="med3" value="Test Paludisme + Consultation">
-Prix 3 (FCFA) : <input id="prix3" type="number" value="5000" oninput="calculerTotal()">
-<div class="total" id="totalBox">TOTAL : 8 500 FCFA</div>
+<h3>📝 Tâches restantes</h3>
+<p id="taskCount">0</p>
 </div>
 
 <div class="card">
-<h3>5. 🔲 QR SECRET - Avec TON mot de passe</h3>
-TON mot de passe pour le QR : <input id="mdpQR" placeholder="Écris TON mot de passe ici">
-<button class="b3" onclick="creerQR()">🔲 CRÉER LE QR SECRET</button>
-<div id="qrZone" style="display:none;text-align:center;background:white;padding:15px;border-radius:12px">
-<img id="qrImg" style="width:230px;height:230px">
-<p style="color:black">Scanne ce QR -> Il demande ton mot de passe -> Il ouvre les 5 pages pleines</p>
-</div>
-</div>
-
-<div class="card no-print">
-<h3>6. 📄 DOCUMENT 5 PAGES PLEINES</h3>
-<button class="b4" onclick="voirDocument()">📄 VOIR LES 5 PAGES PLEINES</button>
-<button class="b4" onclick="window.print()">🖨️ IMPRIMER LES 5 PAGES</button>
-<div id="docZone" style="display:none"></div>
+<h3>⏱️ Temps étudié</h3>
+<p id="studyTime">0 min</p>
 </div>
 
 <div class="card">
-<h3>🔓 TEST : Scanner le QR</h3>
-Contenu du QR : <textarea id="qrContenu"></textarea>
-Mot de passe : <input id="mdpTest" placeholder="Tape le mot de passe">
-<button class="b4" onclick="ouvrirAvecMdp()">🔓 OUVRIR AVEC MOT DE PASSE</button>
-<div id="testResult"></div>
+<h3>🎯 Objectif</h3>
+<p>120 min</p>
 </div>
+
+</div>
+
+<h2>📊 Progression</h2>
+
+<div class="progress">
+<div id="bar"></div>
+</div>
+
+<p class="small" id="progressText">0 % atteint</p>
+
+<h2>Bienvenue !</h2>
+<p class="small">
+Organise tes cours, tes révisions et tes objectifs universitaires.
+</p>
+
+</section>
+
+<section id="subjects" class="section">
+
+<h2>📚 Mes matières</h2>
+
+<input id="subjectInput" placeholder="Nom de la matière">
+
+<button onclick="addSubject()">Ajouter</button>
+
+<div id="subjectList"></div>
+
+</section>
+
+<section id="tasks" class="section">
+
+<h2>📝 Mes tâches</h2>
+
+<input id="taskInput" placeholder="Ex : Réviser la biologie">
+
+<input id="taskDate" type="datetime-local">
+
+<button onclick="addTask()">Ajouter une tâche</button>
+
+<div id="taskList"></div>
+
+</section>
+
+<section id="timerSection" class="section">
+
+<h2>⏱️ Chronomètre</h2>
+
+<div class="timer" id="timer">00:00:00</div>
+
+<button onclick="startTimer()">▶ Démarrer</button>
+
+<button onclick="pauseTimer()">⏸ Pause</button>
+
+<button onclick="resetTimer()">↻ Terminer</button>
+
+<p class="small">
+Le temps est enregistré lorsque tu termines ta séance.
+</p>
+
+</section>
+
+<section id="schedule" class="section">
+
+<h2>📅 Emploi du temps</h2>
+
+<input id="courseName" placeholder="Nom du cours">
+
+<select id="courseDay">
+<option>Lundi</option>
+<option>Mardi</option>
+<option>Mercredi</option>
+<option>Jeudi</option>
+<option>Vendredi</option>
+<option>Samedi</option>
+<option>Dimanche</option>
+</select>
+
+<input id="courseTime" type="time">
+
+<button onclick="addCourse()">Ajouter le cours</button>
+
+<div id="courseList"></div>
+
+</section>
+
+<section id="reminders" class="section">
+
+<h2>🔔 Mes rappels</h2>
+
+<input id="reminderText" placeholder="Nom du rappel">
+
+<input id="reminderDate" type="datetime-local">
+
+<button onclick="addReminder()">Programmer</button>
+
+<div id="reminderList"></div>
+
+</section>
+
+</div>
+
+<nav>
+<button onclick="show('home')">🏠<br>Accueil</button>
+<button onclick="show('subjects')">📚<br>Matières</button>
+<button onclick="show('tasks')">📝<br>Tâches</button>
+<button onclick="show('timerSection')">⏱️<br>Timer</button>
+<button onclick="show('schedule')">📅<br>Cours</button>
+<button onclick="show('reminders')">🔔<br>Rappels</button>
+</nav>
 
 <script>
-function recevoirMontre(){
-  var coeur = 72 + Math.floor(Math.random()*18);
-  var spo2 = 96 + Math.floor(Math.random()*3);
-  var temp = (37.8 + Math.random()*1.4).toFixed(1);
-  var sommeil = (5 + Math.random()*2).toFixed(1) + "h";
-  var pas = 2000 + Math.floor(Math.random()*3000);
-  document.getElementById('coeur').value = coeur;
-  document.getElementById('spo2').value = spo2;
-  document.getElementById('temp').value = temp;
-  document.getElementById('sommeil').value = sommeil;
-  document.getElementById('pas').value = pas;
-  document.getElementById('msgMontre').innerHTML = "✅ Montre connectée ! Reçu : Coeur "+coeur+" | Oxygène "+spo2+"% | Temp "+temp+"°C | Sommeil "+sommeil+" | Pas "+pas;
-  alert("✅ Montre : infos reçues et mises dans le code");
+
+function load(key) {
+    try {
+        return JSON.parse(localStorage.getItem(key)) || [];
+    } catch(e) {
+        return [];
+    }
 }
 
-var texteIA = "";
-var maladieGlobale = "";
-var medicamentsGlobale = "";
-var guerirGlobale = "";
+let subjects = load("subjects");
+let tasks = load("tasks");
+let courses = load("courses");
+let reminders = load("reminders");
 
-function analyserIA(){
-  var nom = document.getElementById('nom').value;
-  var coeur = document.getElementById('coeur').value;
-  var spo2 = document.getElementById('spo2').value;
-  var temp = document.getElementById('temp').value;
-  var sommeil = document.getElementById('sommeil').value;
-  var symptomes = document.getElementById('symptomes').value;
-  if(!nom || !symptomes){ alert("Mets le nom + les symptômes"); return; }
-  maladieGlobale = "Paludisme probable avec fièvre";
-  medicamentsGlobale = "Prendre les médicaments du tableau, beaucoup d'eau, repos total.";
-  guerirGlobale = "Boire 2L d'eau par jour, se reposer 3 jours, dormir sous moustiquaire, manger léger, ne pas sortir au soleil.";
-  if(temp && parseFloat(temp) < 37.5){ maladieGlobale = "Fatigue / Infection légère"; medicamentsGlobale = "Repos, eau, paracétamol si douleur."; guerirGlobale = "Repos, eau, bonne alimentation, sommeil 8h."; }
-  if(spo2 && parseInt(spo2) < 94){ maladieGlobale = "Problème respiratoire - Aller vite à l'hôpital"; medicamentsGlobale = "Aller vite à l'hôpital, ne pas rester seul."; guerirGlobale = "Ne pas rester seul, aller à l'hôpital tout de suite."; }
-  texteIA = "Patient : "+nom+"\nCoeur (montre) : "+coeur+" bpm\nOxygène (montre) : "+spo2+"%\nTemp : "+temp+"°C\nSommeil (montre) : "+sommeil+"\nSymptômes : "+symptomes+"\n\nMALADIE : "+maladieGlobale+"\nMÉDICAMENTS : "+medicamentsGlobale+"\nGUÉRIR : "+guerirGlobale;
-  var box = document.getElementById('iaBox');
-  box.style.display = "block";
-  box.innerText = "✅ IA A ANALYSÉ LES INFOS DE LA MONTRE\n\n" + texteIA;
-  calculerTotal();
-  alert("✅ IA a fini !");
+let seconds = 0;
+let interval = null;
+
+let totalStudy = Number(localStorage.getItem("totalStudy")) || 0;
+
+function save() {
+    localStorage.setItem("subjects",JSON.stringify(subjects));
+    localStorage.setItem("tasks",JSON.stringify(tasks));
+    localStorage.setItem("courses",JSON.stringify(courses));
+    localStorage.setItem("reminders",JSON.stringify(reminders));
 }
 
-function calculerTotal(){
-  var p1 = parseInt(document.getElementById('prix1').value||0);
-  var p2 = parseInt(document.getElementById('prix2').value||0);
-  var p3 = parseInt(document.getElementById('prix3').value||0);
-  var total = p1+p2+p3;
-  document.getElementById('totalBox').innerHTML = "TOTAL : " + total.toLocaleString('fr-FR') + " FCFA";
-  return total;
+function show(id) {
+    document.querySelectorAll(".section").forEach(s => {
+        s.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
 }
 
-function creerQR(){
-  var mdp = document.getElementById('mdpQR').value;
-  var nom = document.getElementById('nom').value;
-  if(!nom || !mdp){ alert("Mets le nom + TON mot de passe"); return; }
-  if(!texteIA){ alert("Clique d'abord IA, ANALYSE"); return; }
-  var total = calculerTotal();
-  var contenu = "NOVA|MDP:"+mdp+"|PATIENT:"+nom+"|MALADIE:"+maladieGlobale+"|TOTAL:"+total+" FCFA|"+texteIA;
-  document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=230x230&data=" + encodeURIComponent(contenu);
-  document.getElementById('qrZone').style.display = "block";
-  document.getElementById('qrContenu').value = contenu;
-  alert("✅ QR créé avec TON mot de passe : " + mdp);
+function clock() {
+    let now = new Date();
+
+    document.getElementById("time").textContent =
+        now.toLocaleTimeString("fr-FR");
+
+    document.getElementById("date").textContent =
+        now.toLocaleDateString("fr-FR",{
+            weekday:"long",
+            day:"numeric",
+            month:"long",
+            year:"numeric"
+        });
 }
 
-function voirDocument(){
-  var nom = document.getElementById('nom').value;
-  var age = document.getElementById('age').value;
-  var tel = document.getElementById('tel').value;
-  var coeur = document.getElementById('coeur').value;
-  var spo2 = document.getElementById('spo2').value;
-  var temp = document.getElementById('temp').value;
-  var sommeil = document.getElementById('sommeil').value;
-  var pas = document.getElementById('pas').value;
-  var symptomes = document.getElementById('symptomes').value;
-  if(!nom || !texteIA){ alert("Mets le nom et clique IA d'abord"); return; }
-  var med1 = document.getElementById('med1').value;
-  var med2 = document.getElementById('med2').value;
-  var med3 = document.getElementById('med3').value;
-  var prix1 = document.getElementById('prix1').value;
-  var prix2 = document.getElementById('prix2').value;
-  var prix3 = document.getElementById('prix3').value;
-  var total = calculerTotal();
-  var date = new Date().toLocaleDateString('fr-FR');
+setInterval(clock,1000);
+clock();
 
-  var html = "";
+function addSubject() {
+    let value = document.getElementById("subjectInput").value.trim();
 
-  // PAGE 1 PLEINE
-  html += "<div class='page'><h2>PAGE 1 / 5 - DOSSIER COMPLET DU PATIENT</h2><h3>1. Informations du patient</h3><p><b>Nom complet :</b> "+nom+"<br><b>Âge :</b> "+age+" ans<br><b>Téléphone :</b> "+tel+"<br><b>Date de consultation :</b> "+date+"<br><b>Hôpital / Centre :</b> NOVA Santé - Cotonou</p><h3>2. Informations prises par la MONTRE - Preuves réelles</h3><table><tr><th>Ce que la montre a mesuré</th><th>Résultat</th><th>Ce que ça veut dire</th></tr><tr><td>❤️ Coeur / Battement du coeur</td><td><b>"+coeur+" bpm</b></td><td>Le coeur bat normalement entre 60 et 100. Si c'est plus haut, le corps se bat contre la maladie.</td></tr><tr><td>🫁 Oxygène dans le sang (SpO2)</td><td><b>"+spo2+"%</b></td><td>Normal : 95% à 100%. En dessous de 94%, il faut aller vite à l'hôpital.</td></tr><tr><td>🌡️ Température</td><td><b>"+temp+" °C</b></td><td>Normal : 36.5 à 37.5°C. Au-dessus, c'est la fièvre, le corps se défend.</td></tr><tr><td>😴 Sommeil</td><td><b>"+sommeil+"</b></td><td>Un malade doit dormir 8h. Si tu dors moins, ton corps ne récupère pas.</td></tr><tr><td>🚶 Pas / Activité</td><td><b>"+pas+" pas</b></td><td>Quand on est malade, on bouge moins. C'est normal, il faut se reposer.</td></tr></table><h3>3. Symptômes racontés par le patient</h3><p>"+symptomes+"</p><p>Le patient a dit ces symptômes. La montre a confirmé avec les chiffres ci-dessus. Les deux ensemble permettent à l'IA de faire un vrai diagnostic.</p><h3>4. Résumé financier - Page 1</h3><p>Médicaments + Consultation : <b>"+total.toLocaleString('fr-FR')+" FCFA</b><br>Le détail complet des prix est à la Page 3.</p><p><b>Conclusion Page 1 :</b> Le dossier est complet. On passe à la Page 2 pour expliquer la maladie en détail.</p></div>";
+    if(!value) return;
 
-  // PAGE 2 PLEINE
-  html += "<div class='page'><h2>PAGE 2 / 5 - LA MALADIE EXPLIQUÉE EN DÉTAIL</h2><h3>Diagnostic de l'IA</h3><p><b>"+maladieGlobale+"</b></p><p>L'IA a analysé les informations de la montre et les symptômes. Voici pourquoi elle a dit ça :</p><ul><li><b>Température "+temp+"°C :</b> C'est la fièvre. Le corps chauffe pour tuer la maladie.</li><li><b>Coeur "+coeur+" bpm :</b> Le coeur bat plus vite parce que le corps travaille beaucoup pour se défendre.</li><li><b>Oxygène "+spo2+"% :</b> L'oxygène montre si les poumons vont bien.</li><li><b>Sommeil "+sommeil+" :</b> Quand on dort mal, la maladie reste plus longtemps.</li><li><b>Symptômes :</b> "+symptomes+"</li></ul><h3>C'est quoi cette maladie ?</h3><p>Cette maladie vient souvent des moustiques, de la fatigue, de l'eau, ou d'une infection. Elle fatigue le corps, elle donne la fièvre, elle donne mal à la tête, elle enlève l'appétit. Si on ne la soigne pas, elle peut devenir grave. Si on la soigne vite, en 3 à 5 jours, on guérit.</p><h3>Est-ce que c'est grave ?</h3><p>Si oxygène est au-dessus de 94% et température en dessous de 40°C, ce n'est pas encore très grave, mais il faut commencer le traitement aujourd'hui même. Si tu as du mal à respirer, si tu vomis beaucoup, si tu ne peux plus te lever, reviens vite à l'hôpital.</p><h3>Combien de temps pour guérir ?</h3><p>En général : Jour 1-2 fièvre baisse, Jour 3 fatigue baisse, Jour 4-5 tu te sens mieux. Il faut finir tous les médicaments, même si tu te sens mieux avant.</p><p><b>Conclusion Page 2 :</b> On a compris la maladie. Maintenant Page 3, les médicaments, les prix, et le total.</p></div>";
+    subjects.push(value);
 
-  // PAGE 3 PLEINE
-  html += "<div class='page'><h2>PAGE 3 / 5 - MÉDICAMENTS PRESCRITS + PRIX + TOTAL</h2><h3>Tableau des médicaments</h3><table><tr><th>Médicament</th><th>Comment le prendre</th><th>Combien de jours</th><th>Prix</th></tr><tr><td><b>"+med1+"</b></td><td>1 comprimé, 3 fois par jour, après manger, avec beaucoup d'eau</td><td>3 jours</td><td>"+parseInt(prix1).toLocaleString('fr-FR')+" FCFA</td></tr><tr><td><b>"+med2+"</b></td><td>1 comprimé, 1 fois par jour, le matin</td><td>5 jours</td><td>"+parseInt(prix2).toLocaleString('fr-FR')+" FCFA</td></tr><tr><td><b>"+med3+"</b></td><td>À faire à l'hôpital / au centre</td><td>1 fois</td><td>"+parseInt(prix3).toLocaleString('fr-FR')+" FCFA</td></tr></table><div class='total'>TOTAL À PAYER : "+total.toLocaleString('fr-FR')+" FCFA</div><h3>Attention très important</h3><ul><li>Ne pas arrêter les médicaments même si tu te sens mieux.</li><li>Ne pas prendre d'autres médicaments sans demander au médecin.</li><li>Boire beaucoup d'eau, 2 litres par jour.</li><li>Si tu es allergique à un médicament, dis-le tout de suite.</li><li>Garde la boîte des médicaments pour montrer au médecin au retour.</li></ul><h3>Où acheter ?</h3><p>Tu peux acheter à la pharmacie avec ce document. Montre la Page 3 au pharmacien. Il va te donner exactement ce qu'il faut. Ne change pas les médicaments.</p><p><b>Conclusion Page 3 :</b> Tu as payé "+total.toLocaleString('fr-FR')+" FCFA. Maintenant Page 4, comment guérir jour par jour.</p></div>";
+    document.getElementById("subjectInput").value = "";
 
-  // PAGE 4 PLEINE
-  html += "<div class='page'><h2>PAGE 4 / 5 - COMMENT GUÉRIR - JOUR PAR JOUR</h2><h3>Le plan de guérison de l'IA</h3><p>"+guerirGlobale+"</p><h3>Jour 1 - Aujourd'hui</h3><ul><li>Prends le premier médicament tout de suite.</li><li>Bois 2 litres d'eau. Mange léger : riz, bouillon, banane.</li><li>Reste à la maison, ne sors pas au soleil.</li><li>Dors tôt, mets la moustiquaire.</li><li>Regarde ta montre : si température monte au-dessus de 40°C, reviens.</li></ul><h3>Jour 2</h3><ul><li>Continue les médicaments, même si fièvre baisse.</li><li>Continue l'eau, mange un peu plus.</li><li>Petite marche de 10 minutes à la maison, pas plus.</li><li>Vérifie ton coeur et ton oxygène sur ta montre.</li></ul><h3>Jour 3 à 5</h3><ul><li>Tu dois te sentir mieux. Si ce n'est pas le cas, reviens.</li><li>Finis tous les médicaments.</li><li>Recommence à manger normalement.</li><li>Dors 8h.</li></ul><h3>Ce qu'il ne faut PAS faire</h3><ul><li>Ne pas boire d'alcool.</li><li>Ne pas prendre de médicaments d'une autre personne.</li><li>Ne pas aller au travail / à l'école tant que fièvre est là.</li><li>Ne pas rester sans moustiquaire la nuit.</li></ul><h3>Quand revenir vite ?</h3><p>Si tu as du mal à respirer, si tu vomis tout, si tu ne peux pas te lever, si ton oxygène sur la montre descend en dessous de 94%, viens tout de suite à l'hôpital.</p></div>";
-
-  // PAGE 5 PLEINE
-  html += "<div class='page'><h2>PAGE 5 / 5 - RÉCAPITULATIF + SIGNATURE</h2><h3>Récapitulatif complet</h3><p><b>Patient :</b> "+nom+" - "+age+" ans - "+tel+"<br><b>Maladie :</b> "+maladieGlobale+"<br><b>Médicaments :</b> "+med1+", "+med2+", "+med3+"<br><b>Total payé :</b> "+total.toLocaleString('fr-FR')+" FCFA<br><b>Date :</b> "+date+"</p><h3>Preuve Montre + QR</h3><p>Ce document vient des informations de la montre : Coeur "+coeur+" bpm, Oxygène "+spo2+"%, Température "+temp+"°C, Sommeil "+sommeil+", Pas "+pas+". Le QR secret protège ce document. Seule la personne qui a le mot de passe peut l'ouvrir.</p><h3>Signature du Médecin</h3><p><br>Nom du médecin : ___________________________<br><br>Signature : ___________________________<br><br>Tampon : ___________________________</p><h3>Signature du Patient</h3><p><br>Je confirme que j'ai compris les médicaments, les prix, et le plan de guérison.<br><br>Nom : "+nom+"<br><br>Signature : ___________________________</p><h3>Prochain rendez-vous</h3><p>Revenir dans 5 jours pour contrôle. Apporter la montre et ce document.</p><p style='text-align:center;font-weight:bold'>--- FIN DU DOCUMENT NOVA - 5 PAGES COMPLÈTES ---</p></div>";
-
-  var zone = document.getElementById('docZone');
-  zone.style.display = "block";
-  zone.innerHTML = html;
+    save();
+    render();
 }
 
-function ouvrirAvecMdp(){
-  var contenu = document.getElementById('qrContenu').value;
-  var mdpTape = document.getElementById('mdpTest').value;
-  if(!contenu || !mdpTape){ alert("Colle le QR + tape le mot de passe"); return; }
-  if(contenu.indexOf("MDP:"+mdpTape) !== -1){
-    document.getElementById('testResult').innerHTML = "<div style='background:#14532d;padding:15px;border-radius:12px'>✅ MOT DE PASSE BON ! Voici les 5 pages pleines :<br><br>"+texteIA.replace(/\n/g,"<br>")+"</div>";
-    voirDocument();
-  } else {
-    document.getElementById('testResult').innerHTML = "<div style='background:#7f1d1d;padding:15px;border-radius:12px'>❌ MAUVAIS MOT DE PASSE. Tu ne peux pas voir le dossier.</div>";
-  }
+function addTask() {
+    let value = document.getElementById("taskInput").value.trim();
+
+    if(!value) return;
+
+    tasks.push({
+        name:value,
+        date:document.getElementById("taskDate").value,
+        done:false
+    });
+
+    document.getElementById("taskInput").value = "";
+
+    save();
+    render();
 }
+
+function addCourse() {
+    let name = document.getElementById("courseName").value.trim();
+    let day = document.getElementById("courseDay").value;
+    let time = document.getElementById("courseTime").value;
+
+    if(!name || !time) return;
+
+    courses.push({name,day,time});
+
+    document.getElementById("courseName").value = "";
+
+    save();
+    render();
+}
+
+function addReminder() {
+    let name = document.getElementById("reminderText").value.trim();
+    let date = document.getElementById("reminderDate").value;
+
+    if(!name || !date || new Date(date) <= new Date()) {
+        alert("Entre un rappel et une date future.");
+        return;
+    }
+
+    reminders.push({
+        name,
+        date,
+        sent:false
+    });
+
+    document.getElementById("reminderText").value = "";
+
+    save();
+    render();
+}
+
+function removeItem(type,index) {
+    if(type==="subjects") subjects.splice(index,1);
+    if(type==="tasks") tasks.splice(index,1);
+    if(type==="courses") courses.splice(index,1);
+    if(type==="reminders") reminders.splice(index,1);
+
+    save();
+    render();
+}
+
+function completeTask(index) {
+    tasks[index].done = !tasks[index].done;
+    save();
+    render();
+}
+
+function formatTime(value) {
+    let h = Math.floor(value/3600);
+    let m = Math.floor((value%3600)/60);
+    let s = value%60;
+
+    return [h,m,s].map(x=>String(x).padStart(2,"0")).join(":");
+}
+
+function startTimer() {
+    if(interval) return;
+
+    interval = setInterval(()=>{
+        seconds++;
+
+        document.getElementById("timer").textContent =
+            formatTime(seconds);
+    },1000);
+}
+
+function pauseTimer() {
+    clearInterval(interval);
+    interval = null;
+}
+
+function resetTimer() {
+    pauseTimer();
+
+    if(seconds > 0) {
+        totalStudy += seconds;
+        localStorage.setItem("totalStudy",totalStudy);
+    }
+
+    seconds = 0;
+
+    document.getElementById("timer").textContent = "00:00:00";
+
+    render();
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g,c=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    })[c]);
+}
+
+function render() {
+
+    document.getElementById("subjectList").innerHTML =
+        subjects.map((s,i)=>`
+        <div class="item">
+        <span>${escapeHTML(s)}</span>
+        <button class="delete" onclick="removeItem('subjects',${i})">×</button>
+        </div>`).join("");
+
+    document.getElementById("taskList").innerHTML =
+        tasks.map((t,i)=>`
+        <div class="item">
+        <span onclick="completeTask(${i})">
+        ${t.done?"✅":"⬜"} ${escapeHTML(t.name)}
+        ${t.date?"<br>"+escapeHTML(t.date):""}
+        </span>
+        <button class="delete" onclick="removeItem('tasks',${i})">×</button>
+        </div>`).join("");
+
+    document.getElementById("courseList").innerHTML =
+        courses.map((c,i)=>`
+        <div class="item">
+        <span>${escapeHTML(c.day)} ${escapeHTML(c.time)}<br>${escapeHTML(c.name)}</span>
+        <button class="delete" onclick="removeItem('courses',${i})">×</button>
+        </div>`).join("");
+
+    document.getElementById("reminderList").innerHTML =
+        reminders.map((r,i)=>`
+        <div class="item">
+        <span>${escapeHTML(r.name)}<br>${escapeHTML(r.date)}</span>
+        <button class="delete" onclick="removeItem('reminders',${i})">×</button>
+        </div>`).join("");
+
+    let minutes = Math.floor(totalStudy/60);
+
+    document.getElementById("subjectCount").textContent = subjects.length;
+
+    document.getElementById("taskCount").textContent =
+        tasks.filter(t=>!t.done).length;
+
+    document.getElementById("studyTime").textContent =
+        minutes+" min";
+
+    let progress = Math.min(100,minutes/120*100);
+
+    document.getElementById("bar").style.width = progress+"%";
+
+    document.getElementById("progressText").textContent =
+        Math.round(progress)+" % de ton objectif atteint";
+}
+
+function checkReminders() {
+    let now = Date.now();
+
+    reminders.forEach(r=>{
+        if(!r.sent && new Date(r.date).getTime() <= now) {
+
+            r.sent = true;
+
+            if("Notification" in window &&
+               Notification.permission === "granted") {
+
+                new Notification("FLORIAN SMART STUDY",{
+                    body:r.name
+                });
+
+            } else {
+                alert("Rappel : "+r.name);
+            }
+
+            save();
+        }
+    });
+}
+
+if("Notification" in window &&
+   Notification.permission === "default") {
+    Notification.requestPermission();
+}
+
+setInterval(checkReminders,10000);
+
+if("serviceWorker" in navigator) {
+    window.addEventListener("load",()=>{
+        navigator.serviceWorker.register("./sw.js")
+        .catch(error=>console.log("Service Worker:",error));
+    });
+}
+
+render();
+
 </script>
+
 </body>
 	</html>
